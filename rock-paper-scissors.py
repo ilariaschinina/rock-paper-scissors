@@ -24,6 +24,14 @@ def beats(one, two):
             (one == 'paper' and two == 'rock'))
 
 
+def valid_input(prompt):
+    while True:
+        response = input(prompt).lower()
+        for move in moves:
+            if move in response:
+                return response
+
+                
 '''Computer Player that chooses its move at random.'''
 class RandomPlayer(Player):
     def move(self):
@@ -34,7 +42,7 @@ class RandomPlayer(Player):
 '''HumanPlayer whose move method asks the human user what move to make.'''
 class HumanPlayer(Player):
     def move(self):
-        move = input("Rock, paper, scissors? > ")
+        move = valid_input("Rock, paper, scissors? > ")
         return move
 
 
@@ -57,6 +65,8 @@ class Game:
             self.play_round()
         print("Game over!")
     
+    # def scores(self):
+    #     beats(p1, p2)
     '''2 Update the Game class so that it displays the score of each round, 
     and keeps score for both players. You can use the provided beats function, 
     which tells whether one move beats another one.

@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
-import random
 
 """This program plays a game of Rock, Paper, Scissors between two Players,
 and reports both Player's scores each round."""
 
+import random
 moves = ['rock', 'paper', 'scissors']
-
-"""The Player class is the parent class for all of the Players
-in this game"""
 
 
 class Player:
+    '''The Player class is the parent class for all of the Players
+    in this game'''
     score = 0
     
     def move(self):
@@ -18,7 +17,6 @@ class Player:
 
     def learn(self, my_move, their_move):
         pass
-
 
 def beats(move1, move2):
     ''' Returns True if player1 wins this round, False otherwise'''
@@ -36,7 +34,6 @@ def valid_input(prompt):
                 return response
 
 
-
 class RandomPlayer(Player):
     '''Computer Player that chooses its move at random.'''
     def move(self):
@@ -44,13 +41,27 @@ class RandomPlayer(Player):
         return move
 
 
-
 class HumanPlayer(Player):
-    '''HumanPlayer whose move method asks the human user what move to make.'''
+    '''HumanPlayer is played by the user and the move method asks the user's input.'''
     def move(self):
         move = valid_input("Rock, paper, scissors? > ")
         return move
 
+
+class ReflectPlayer(Player):
+    '''ReflectPlayer remembers what move the opponent played last round, 
+    and plays that move this round.'''
+
+    def __init__(self):
+        self.opponent_move = 'rock'
+    
+    def learn(self, my_move, their_move):
+        self.opponent_move = their_move
+        return their_move
+    
+    def move(self):
+        move = self.opponent_move
+        return move
 
 class Game:
     def __init__(self, p1, p2):
@@ -73,8 +84,8 @@ class Game:
                 print("Player 2 wins")
                 self.p2.score +=1
                 break
-            self.p1.learn(move1, move2)
-            self.p2.learn(move2, move1)
+        self.p1.learn(move1, move2)
+        self.p2.learn(move2, move1)
 
 
     def play_game(self):
@@ -89,14 +100,8 @@ class Game:
             print("PLAYER 2 is the WINNER!!! ")
         print("Game over!")
     
-    '''2 Update the Game class so that it displays the score of each round, 
-    and keeps score for both players. You can use the provided beats function, 
-    which tells whether one move beats another one.
-    Make sure to handle ties — when both players make the same move!'''
-
-
 
 if __name__ == '__main__':
-    game = Game(HumanPlayer(), RandomPlayer())
+    game = Game(HumanPlayer(), ReflectPlayer())
     game.play_game()
 

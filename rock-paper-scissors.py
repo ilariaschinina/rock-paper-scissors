@@ -57,11 +57,33 @@ class ReflectPlayer(Player):
     
     def learn(self, my_move, their_move):
         self.opponent_move = their_move
-        return their_move
     
     def move(self):
         move = self.opponent_move
         return move
+
+class CyclePlayer(Player):
+    '''CyclePlayer remembers what move it played last round, 
+    and cycles through the different moves.'''
+    def __init__(self):
+        self.last_move = None
+
+    def learn(self, my_move, their_move):
+        self.last_move = my_move
+
+    def move (self):
+        if self.last_move == None:
+            move = random.choice(moves)
+            return move
+        elif self.last_move == moves[2]:
+            move = moves[0]
+            return move
+        else:
+            index = moves.index(self.last_move)
+            index =+1
+            move = moves[index]
+            return move
+
 
 class Game:
     def __init__(self, p1, p2):
@@ -89,9 +111,9 @@ class Game:
 
 
     def play_game(self):
-        print("Game start!")
+        print("Game start!\n")
         for round in range(3):
-            print(f"Round {round}:")
+            print(f"Round {round+1}:")
             self.play_round()
             print(f"Player 1: {self.p1.score}\tPlayer 2: {self.p2.score}\n")
         if self.p1.score > self.p2.score:
@@ -102,6 +124,6 @@ class Game:
     
 
 if __name__ == '__main__':
-    game = Game(HumanPlayer(), ReflectPlayer())
+    game = Game(RandomPlayer(), CyclePlayer())
     game.play_game()
 

@@ -94,16 +94,16 @@ class Game:
         while True:
             move1 = self.p1.move()
             move2 = self.p2.move()
-            print(f"Player 1: {move1}\tPlayer 2: {move2}")
+            print(f"Player A played {move1}\nPlayer B played {move2}")
             if beats(move1, move2):
-                print("Player 1 wins")
+                print("Player A wins")
                 self.p1.score +=1
                 break
             elif move1 == move2:
                 print("Draw... Replay this round")
                 continue
             else:
-                print("Player 2 wins")
+                print("Player B wins")
                 self.p2.score +=1
                 break
         self.p1.learn(move1, move2)
@@ -115,15 +115,15 @@ class Game:
         for round in range(3):
             print(f"Round {round+1}:")
             self.play_round()
-            print(f"Player 1: {self.p1.score}\tPlayer 2: {self.p2.score}\n")
+            print(f"SCORE: Player A: {self.p1.score}\tPlayer B: {self.p2.score}\n")
         if self.p1.score > self.p2.score:
-            print("PLAYER 1 is the WINNER!!! ")
+            print("***PLAYER A is the WINNER***")
         else:
-            print("PLAYER 2 is the WINNER!!! ")
+            print("***PLAYER B is the WINNER***")
         print("Game over!")
     
 
 if __name__ == '__main__':
-    game = Game(RandomPlayer(), CyclePlayer())
+    game = Game(HumanPlayer(), ReflectPlayer())
     game.play_game()
 
